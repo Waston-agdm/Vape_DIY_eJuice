@@ -2,104 +2,113 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIY 烟油计算器 (带配方库)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DIY 烟油计算器</title>
+    
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2620/2620861.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
         .slider-thumb::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #4ade80;
-            cursor: pointer;
-            border-radius: 50%;
+            -webkit-appearance: none; appearance: none;
+            width: 22px; height: 22px;
+            background: #4ade80; cursor: pointer; border-radius: 50%;
         }
+        * { -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 font-sans min-h-screen p-4 md:p-8">
 
     <div class="max-w-4xl mx-auto">
-        <div class="flex justify-between items-center mb-8 border-b border-slate-700 pb-4">
+        <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
             <div>
-                <h1 class="text-3xl font-bold text-green-400">⚡ DIY E-Liquid Lab</h1>
-                <p class="text-sm text-slate-400 mt-1">配方库版 · 自动计算</p>
+                <h1 class="text-2xl font-bold text-green-400">⚡ DIY 烟油计算器</h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest">E-Liquid Calculator Pro</p>
             </div>
             <div class="flex gap-2">
-                <button onclick="saveCurrentRecipe()" class="px-4 py-2 text-sm bg-green-600 hover:bg-green-500 rounded text-white transition flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
-                    保存配方
-                </button>
-                <button onclick="resetCalculator()" class="px-4 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded text-white transition">重置</button>
+                <button onclick="saveCurrentRecipe()" class="px-3 py-2 text-xs bg-green-600 hover:bg-green-500 rounded text-white font-bold transition">保存配方</button>
+                <button onclick="resetCalculator()" class="px-3 py-2 text-xs bg-slate-700 rounded text-white transition">重置</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            <div class="space-y-6">
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                    <h2 class="text-lg font-semibold text-green-400 mb-4">1. 目标设置</h2>
-                    <div class="mb-4">
-                        <label class="block text-xs text-slate-400 mb-1">配方名称 (用于保存)</label>
-                        <input type="text" id="recipeName" placeholder="例如：我的秘制烟草" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 outline-none text-white">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="space-y-4">
+                <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl">
+                    <h2 class="text-sm font-bold text-slate-400 mb-4 flex items-center gap-2">目标设定</h2>
+                    <div class="space-y-4">
+                        <input type="text" id="recipeName" placeholder="配方名称（如：我的秘制...）" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 focus:border-green-500 outline-none text-white text-sm">
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] text-slate-500 mb-1 pl-1">成品总量 (ml)</label>
+                                <input type="number" id="targetVol" value="30" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 focus:border-green-500 outline-none text-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-slate-500 mb-1 pl-1">目标尼古丁 (mg)</label>
+                                <input type="number" id="targetStr" value="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 focus:border-green-500 outline-none text-white font-mono">
+                            </div>
+                        </div>
+                        
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">总量 (ml)</label>
-                            <input type="number" id="targetVol" value="30" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 outline-none text-white font-mono">
+                            <div class="flex justify-between text-[10px] text-slate-500 mb-2 pl-1">
+                                <span>PG / VG 比例</span>
+                                <span id="targetRatioDisplay" class="text-green-400 font-bold">30 PG / 70 VG</span>
+                            </div>
+                            <input type="range" id="targetVgSlider" min="0" max="100" value="70" class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb">
                         </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">尼古丁 (mg)</label>
-                            <input type="number" id="targetStr" value="20" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 outline-none text-white font-mono">
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <div class="flex justify-between text-xs text-slate-400 mb-1">
-                            <span>PG/VG 比例</span>
-                            <span id="targetRatioDisplay" class="text-green-300">50/50</span>
-                        </div>
-                        <input type="range" id="targetVgSlider" min="0" max="100" value="70" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb">
                     </div>
                 </div>
 
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                    <h2 class="text-lg font-semibold text-blue-400 mb-4">2. 基液与香精</h2>
+                <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl">
+                    <h2 class="text-sm font-bold text-slate-400 mb-4">原料设置</h2>
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div><label class="block text-xs text-slate-400 mb-1">基液浓度 (mg)</label>
-                        <input type="number" id="baseStr" value="250" class="w-full bg-slate-900 border border-slate-600 rounded p-2 outline-none text-white font-mono"></div>
-                        <div><label class="block text-xs text-slate-400 mb-1">基液载体</label>
-                        <select id="baseType" class="w-full bg-slate-900 border border-slate-600 rounded p-2 outline-none text-white"><option value="0">100% PG</option><option value="100">100% VG</option><option value="50">50/50</option></select></div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 mb-1 pl-1">基液浓度 (mg/ml)</label>
+                            <input type="number" id="baseStr" value="36" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 outline-none text-white text-sm font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 mb-1 pl-1">基液载体类型</label>
+                            <select id="baseType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 outline-none text-white text-sm">
+                                <option value="0">100% PG</option>
+                                <option value="100">100% VG</option>
+                                <option value="50">50/50 混合</option>
+                            </select>
+                        </div>
                     </div>
-                    <div id="flavorsContainer" class="space-y-2"></div>
-                    <button onclick="addFlavor()" class="mt-3 text-xs text-purple-400 hover:text-purple-300 font-bold">+ 添加香精</button>
+                    <div id="flavorsContainer" class="space-y-3"></div>
+                    <button onclick="addFlavor()" class="mt-4 text-xs text-purple-400 font-bold hover:text-purple-300 transition">+ 添加香精</button>
                 </div>
             </div>
 
-            <div class="space-y-6">
-                <div id="warning-box" class="hidden p-4 bg-red-900/50 border border-red-500 rounded text-red-200 text-xs"></div>
-                <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
+            <div class="space-y-4">
+                <div id="warning-box" class="hidden p-4 bg-red-900/40 border border-red-500/50 rounded-xl text-red-200 text-xs leading-relaxed animate-pulse"></div>
+                
+                <div class="bg-slate-800 rounded-2xl border border-slate-700 shadow-xl overflow-hidden">
+                    <div class="bg-slate-900/50 px-5 py-3 border-b border-slate-700">
+                        <span class="text-xs font-bold text-slate-300">配方计算结果</span>
+                    </div>
                     <table class="w-full text-sm text-left">
-                        <thead class="bg-slate-900 text-xs text-slate-400">
-                            <tr><th class="px-4 py-3">成分</th><th class="px-4 py-3 text-right">毫升 (ml)</th><th class="px-4 py-3 text-right">占比</th></tr>
+                        <thead class="text-[10px] text-slate-500 uppercase tracking-tighter">
+                            <tr><th class="px-5 py-3">成分名称</th><th class="px-5 py-3 text-right">加入量 (ml)</th><th class="px-5 py-3 text-right">占比</th></tr>
                         </thead>
-                        <tbody id="resultBody" class="divide-y divide-slate-700"></tbody>
-                        <tfoot class="bg-slate-700/20 font-bold">
-                            <tr><td class="px-4 py-3 text-slate-200">总计</td><td class="px-4 py-3 text-green-400 text-right" id="totalMl">0 ml</td><td class="px-4 py-3 text-right">100%</td></tr>
+                        <tbody id="resultBody" class="divide-y divide-slate-700/50 text-xs"></tbody>
+                        <tfoot class="bg-slate-900/80 font-bold">
+                            <tr><td class="px-5 py-4 text-slate-300">总计</td><td class="px-5 py-4 text-green-400 text-right" id="totalMl">0 ml</td><td class="px-5 py-4 text-right text-slate-500 text-[10px]">100%</td></tr>
                         </tfoot>
                     </table>
                 </div>
+                <p class="text-[10px] text-slate-500 px-2 italic">提示：建议使用高精度针管或量杯进行体积取样。</p>
             </div>
         </div>
 
-        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-            <h2 class="text-lg font-semibold text-yellow-500 mb-4 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                我的配方书
-            </h2>
-            <div id="recipeLibrary" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                </div>
+        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
+            <h2 class="text-sm font-bold text-yellow-500 mb-5 flex items-center gap-2">已保存的配方</h2>
+            <div id="recipeLibrary" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
     </div>
 
@@ -125,7 +134,7 @@
     function bindEvents() {
         document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calculate));
         els.targetVgSlider.addEventListener('input', (e) => {
-            els.targetRatioDisplay.innerText = `${100 - e.target.value}/${e.target.value}`;
+            els.targetRatioDisplay.innerText = `${100 - e.target.value} PG / ${e.target.value} VG`;
         });
     }
 
@@ -156,23 +165,23 @@
         let extraVg = (vol * targetVgPct/100) - nicVg;
         let extraPg = (vol * targetPgPct/100) - nicPg - flavVol;
 
-        if (extraVg < 0 || extraPg < 0) {
+        if (extraVg < -0.01 || extraPg < -0.01) {
             els.warningBox.classList.remove('hidden');
-            els.warningBox.innerText = "错误：目标比例无法实现，香精或尼古丁过多。";
+            els.warningBox.innerText = "⚠️ 比例溢出：当前尼古丁或香精占比过高，已超出目标比例。";
         }
 
         let html = '';
         if(nicVol > 0) html += renderRow('尼古丁基液', nicVol, (nicVol/vol*100), 'text-red-400');
         html += flavHtml;
-        html += renderRow('纯 VG', Math.max(0, extraVg), (Math.max(0, extraVg)/vol*100), 'text-green-400 font-bold');
-        html += renderRow('纯 PG', Math.max(0, extraPg), (Math.max(0, extraPg)/vol*100), 'text-blue-400 font-bold');
+        html += renderRow('补充 VG (甘油)', Math.max(0, extraVg), (Math.max(0, extraVg)/vol*100), 'text-green-400 font-bold');
+        html += renderRow('补充 PG (丙二醇)', Math.max(0, extraPg), (Math.max(0, extraPg)/vol*100), 'text-blue-400 font-bold');
         
         els.resultBody.innerHTML = html;
         els.totalMl.innerText = vol.toFixed(2) + ' ml';
     }
 
     function renderRow(name, ml, pct, cl) {
-        return `<tr class="hover:bg-slate-700/50"><td class="px-4 py-2 ${cl}">${name}</td><td class="px-4 py-2 text-right font-bold">${ml.toFixed(2)}</td><td class="px-4 py-2 text-right text-slate-500">${pct.toFixed(1)}%</td></tr>`;
+        return `<tr class="hover:bg-slate-700/30"><td class="px-5 py-3 ${cl}">${name}</td><td class="px-5 py-3 text-right font-mono font-bold">${ml.toFixed(2)}</td><td class="px-5 py-3 text-right text-slate-500 text-[10px]">${pct.toFixed(1)}%</td></tr>`;
     }
 
     function addFlavor() { flavors.push({ name: '', pct: 0 }); renderFlavors(); }
@@ -182,15 +191,20 @@
         flavors.forEach((f, i) => {
             const div = document.createElement('div');
             div.className = 'flex gap-2';
-            div.innerHTML = `<input type="text" value="${f.name}" oninput="flavors[${i}].name=this.value;calculate()" placeholder="名称" class="flex-1 bg-slate-900 border border-slate-600 rounded p-1 text-sm outline-none"><input type="number" value="${f.pct}" oninput="flavors[${i}].pct=parseFloat(this.value)||0;calculate()" class="w-16 bg-slate-900 border border-slate-600 rounded p-1 text-sm text-right outline-none"><button onclick="removeFlavor(${i})" class="text-slate-500 hover:text-red-400">×</button>`;
+            div.innerHTML = `
+                <input type="text" value="${f.name}" oninput="flavors[${i}].name=this.value;calculate()" placeholder="香精名称" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs outline-none focus:border-purple-500 text-white">
+                <div class="relative w-20">
+                    <input type="number" value="${f.pct}" oninput="flavors[${i}].pct=parseFloat(this.value)||0;calculate()" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-right outline-none font-mono text-white pr-4">
+                    <span class="absolute right-1 top-2 text-[8px] text-slate-500">%</span>
+                </div>
+                <button onclick="removeFlavor(${i})" class="text-slate-500 hover:text-red-400 px-1 text-xl">×</button>`;
             els.flavorsContainer.appendChild(div);
         });
         calculate();
     }
 
-    // --- 配方库功能 ---
     function saveCurrentRecipe() {
-        const name = els.recipeName.value.trim() || "未命名配方 " + new Date().toLocaleDateString();
+        const name = els.recipeName.value.trim() || "未命名 " + new Date().toLocaleDateString();
         const recipe = {
             id: Date.now(),
             name: name,
@@ -199,25 +213,25 @@
             vg: els.targetVgSlider.value,
             baseStr: els.baseStr.value,
             baseType: els.baseType.value,
-            flavors: [...flavors]
+            flavors: JSON.parse(JSON.stringify(flavors))
         };
         recipeBook.unshift(recipe);
         localStorage.setItem('myVapeRecipes', JSON.stringify(recipeBook));
         renderLibrary();
-        alert("配方已保存到本地！");
+        alert("配方已保存！");
     }
 
     function renderLibrary() {
-        els.recipeLibrary.innerHTML = recipeBook.length ? '' : '<p class="text-slate-500 text-sm italic col-span-full">暂无保存的配方</p>';
+        els.recipeLibrary.innerHTML = recipeBook.length ? '' : '<p class="text-slate-600 text-xs italic py-4">还没有保存任何配方...</p>';
         recipeBook.forEach(r => {
             const card = document.createElement('div');
-            card.className = 'bg-slate-900 border border-slate-700 p-4 rounded-lg relative hover:border-yellow-500 transition group';
+            card.className = 'bg-slate-900/50 border border-slate-700 p-4 rounded-xl relative group touch-manipulation';
             card.innerHTML = `
-                <div class="font-bold text-yellow-500 mb-1 truncate pr-6">${r.name}</div>
-                <div class="text-[10px] text-slate-400 mb-2">${100-r.vg}PG/${r.vg}VG · ${r.str}mg</div>
-                <div class="flex gap-2">
-                    <button onclick="loadRecipe(${r.id})" class="text-[10px] bg-slate-700 px-2 py-1 rounded hover:bg-slate-600">加载</button>
-                    <button onclick="deleteRecipe(${r.id})" class="text-[10px] text-red-500 opacity-0 group-hover:opacity-100 transition">删除</button>
+                <div class="font-bold text-slate-200 text-sm mb-1 truncate">${r.name}</div>
+                <div class="text-[10px] text-slate-500 mb-3">${100-r.vg}PG/${r.vg}VG · ${r.str}mg</div>
+                <div class="flex gap-4 items-center">
+                    <button onclick="loadRecipe(${r.id})" class="text-[10px] bg-slate-800 text-yellow-500 px-3 py-1.5 rounded-lg font-bold">查看详情</button>
+                    <button onclick="deleteRecipe(${r.id})" class="text-[10px] text-red-900 hover:text-red-500 transition">删除</button>
                 </div>
             `;
             els.recipeLibrary.appendChild(card);
@@ -231,21 +245,22 @@
         els.targetVol.value = r.vol;
         els.targetStr.value = r.str;
         els.targetVgSlider.value = r.vg;
-        els.targetRatioDisplay.innerText = `${100-r.vg}/${r.vg}`;
+        els.targetRatioDisplay.innerText = `${100-r.vg} PG / ${r.vg} VG`;
         els.baseStr.value = r.baseStr;
         els.baseType.value = r.baseType;
-        flavors = [...r.flavors];
+        flavors = JSON.parse(JSON.stringify(r.flavors));
         renderFlavors();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     window.deleteRecipe = (id) => {
-        if(!confirm("确定删除该配方吗？")) return;
+        if(!confirm("确定要永久删除这个配方吗？")) return;
         recipeBook = recipeBook.filter(x => x.id !== id);
         localStorage.setItem('myVapeRecipes', JSON.stringify(recipeBook));
         renderLibrary();
     };
 
-    window.resetCalculator = () => { if(confirm('重置当前输入吗？')) location.reload(); };
+    window.resetCalculator = () => { if(confirm('重置当前所有输入吗？')) location.reload(); };
 
     bindEvents();
     renderFlavors();
@@ -253,5 +268,3 @@
 </script>
 </body>
 </html>
-
-
