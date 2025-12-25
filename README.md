@@ -38,4 +38,4 @@
 
 ---
 
-© 2025. Powered by Gemini.
+© 2025
