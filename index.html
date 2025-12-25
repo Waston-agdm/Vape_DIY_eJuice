@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIY 烟油计算器 (体积版)</title>
+    <title>DIY 烟油极客计算器 (带配方库)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 针对不同浏览器的数字输入框隐藏箭头 */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
-        
         .slider-thumb::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -27,156 +25,88 @@
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-center mb-8 border-b border-slate-700 pb-4">
             <div>
-                <h1 class="text-3xl font-bold text-green-400">⚡ DIY E-Liquid Calculator</h1>
-                <p class="text-sm text-slate-400 mt-1">纯体积模式 (Volume Only) · 自动保存</p>
+                <h1 class="text-3xl font-bold text-green-400">⚡ DIY E-Liquid Lab</h1>
+                <p class="text-sm text-slate-400 mt-1">配方库版 · 自动计算</p>
             </div>
             <div class="flex gap-2">
+                <button onclick="saveCurrentRecipe()" class="px-4 py-2 text-sm bg-green-600 hover:bg-green-500 rounded text-white transition flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    保存配方
+                </button>
                 <button onclick="resetCalculator()" class="px-4 py-2 text-sm bg-slate-700 hover:bg-slate-600 rounded text-white transition">重置</button>
-                <button onclick="window.print()" class="px-4 py-2 text-sm bg-blue-600 hover:bg-blue-500 rounded text-white transition">打印配方</button>
             </div>
         </div>
 
-        <div id="warning-box" class="hidden mb-6 p-4 bg-red-900/50 border border-red-500 rounded text-red-200 text-sm flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            <span id="warning-text"></span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             <div class="space-y-6">
-                
                 <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                    <h2 class="text-lg font-semibold text-green-400 mb-4 flex items-center gap-2">
-                        <span>1. 目标成品设置</span>
-                    </h2>
+                    <h2 class="text-lg font-semibold text-green-400 mb-4">1. 目标设置</h2>
+                    <div class="mb-4">
+                        <label class="block text-xs text-slate-400 mb-1">配方名称 (用于保存)</label>
+                        <input type="text" id="recipeName" placeholder="例如：我的秘制烟草" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 outline-none text-white">
+                    </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">目标总量 (ml)</label>
-                            <input type="number" id="targetVol" value="30" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 focus:outline-none text-white font-mono">
+                            <label class="block text-xs text-slate-400 mb-1">总量 (ml)</label>
+                            <input type="number" id="targetVol" value="30" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 outline-none text-white font-mono">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">目标尼古丁 (mg)</label>
-                            <input type="number" id="targetStr" value="20" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 focus:outline-none text-white font-mono">
+                            <label class="block text-xs text-slate-400 mb-1">尼古丁 (mg)</label>
+                            <input type="number" id="targetStr" value="3" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-green-500 outline-none text-white font-mono">
                         </div>
                     </div>
-                    
                     <div class="mt-4">
                         <div class="flex justify-between text-xs text-slate-400 mb-1">
-                            <span>目标 PG/VG 比例</span>
-                            <span id="targetRatioDisplay" class="text-green-300">50 PG / 50 VG</span>
+                            <span>PG/VG 比例</span>
+                            <span id="targetRatioDisplay" class="text-green-300">30/70</span>
                         </div>
                         <input type="range" id="targetVgSlider" min="0" max="100" value="70" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider-thumb">
-                        <div class="flex justify-between text-[10px] text-slate-500 mt-1">
-                            <span>More PG (击喉感)</span>
-                            <span>More VG (大烟雾)</span>
-                        </div>
                     </div>
                 </div>
 
                 <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                    <h2 class="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
-                        <span>2. 尼古丁基液信息</span>
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">基液浓度 (mg/ml)</label>
-                            <input type="number" id="baseStr" value="250" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-blue-500 focus:outline-none text-white font-mono">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">基液载体类型</label>
-                            <select id="baseType" class="w-full bg-slate-900 border border-slate-600 rounded p-2 focus:border-blue-500 focus:outline-none text-white">
-                                <option value="100">100% VG</option>
-                                <option value="0" selected>100% PG</option>
-                                <option value="50">50/50 混合</option>
-                            </select>
-                        </div>
+                    <h2 class="text-lg font-semibold text-blue-400 mb-4">2. 基液与香精</h2>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div><label class="block text-xs text-slate-400 mb-1">基液浓度 (mg)</label>
+                        <input type="number" id="baseStr" value="36" class="w-full bg-slate-900 border border-slate-600 rounded p-2 outline-none text-white font-mono"></div>
+                        <div><label class="block text-xs text-slate-400 mb-1">基液载体</label>
+                        <select id="baseType" class="w-full bg-slate-900 border border-slate-600 rounded p-2 outline-none text-white"><option value="0">100% PG</option><option value="100">100% VG</option><option value="50">50/50</option></select></div>
                     </div>
+                    <div id="flavorsContainer" class="space-y-2"></div>
+                    <button onclick="addFlavor()" class="mt-3 text-xs text-purple-400 hover:text-purple-300 font-bold">+ 添加香精</button>
                 </div>
-
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg font-semibold text-purple-400">3. 香精 (默认为 PG)</h2>
-                        <button onclick="addFlavor()" class="text-xs bg-purple-600 hover:bg-purple-500 px-3 py-1 rounded text-white transition">+ 添加香精</button>
-                    </div>
-                    <div id="flavorsContainer" class="space-y-2">
-                        </div>
-                    <div class="mt-3 text-right">
-                        <span class="text-xs text-slate-400">香精总占比: <span id="totalFlavorPct" class="text-purple-300">0%</span></span>
-                    </div>
-                </div>
-
             </div>
 
             <div class="space-y-6">
-                
-                <div class="bg-slate-800 p-0 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
-                    <div class="p-5 border-b border-slate-700 bg-slate-700/30">
-                        <h2 class="text-lg font-semibold text-white">配方结果</h2>
-                        <p class="text-xs text-slate-400">推荐使用 <span class="text-green-400 font-bold">针管/量杯</span> 进行量取。</p>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left">
-                            <thead class="text-xs text-slate-400 uppercase bg-slate-900">
-                                <tr>
-                                    <th class="px-6 py-3">成分</th>
-                                    <th class="px-6 py-3">毫升 (ml)</th>
-                                    <th class="px-6 py-3">占比</th>
-                                </tr>
-                            </thead>
-                            <tbody id="resultBody" class="divide-y divide-slate-700">
-                                </tbody>
-                            <tfoot class="bg-slate-700/20 font-bold">
-                                <tr>
-                                    <td class="px-6 py-3 text-slate-200">总计</td>
-                                    <td class="px-6 py-3 text-green-400" id="totalMl">0 ml</td>
-                                    <td class="px-6 py-3">100%</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                <div id="warning-box" class="hidden p-4 bg-red-900/50 border border-red-500 rounded text-red-200 text-xs"></div>
+                <div class="bg-slate-800 rounded-xl border border-slate-700 shadow-lg overflow-hidden">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-900 text-xs text-slate-400">
+                            <tr><th class="px-4 py-3">成分</th><th class="px-4 py-3 text-right">毫升 (ml)</th><th class="px-4 py-3 text-right">占比</th></tr>
+                        </thead>
+                        <tbody id="resultBody" class="divide-y divide-slate-700"></tbody>
+                        <tfoot class="bg-slate-700/20 font-bold">
+                            <tr><td class="px-4 py-3 text-slate-200">总计</td><td class="px-4 py-3 text-green-400 text-right" id="totalMl">0 ml</td><td class="px-4 py-3 text-right">100%</td></tr>
+                        </tfoot>
+                    </table>
                 </div>
-
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
-                    <h3 class="text-sm font-semibold text-slate-300 mb-3">成品比例分布</h3>
-                    
-                    <div class="mb-2 flex justify-between text-xs text-slate-400">
-                        <span>PG (含香精/基液)</span>
-                        <span>VG</span>
-                    </div>
-                    <div class="w-full h-4 bg-slate-700 rounded-full overflow-hidden flex mb-6">
-                        <div id="bar-pg" class="h-full bg-blue-500 transition-all duration-500" style="width: 30%"></div>
-                        <div id="bar-vg" class="h-full bg-green-500 transition-all duration-500" style="width: 70%"></div>
-                    </div>
-
-                    <div class="mb-2 flex justify-between text-xs text-slate-400">
-                        <span>成分构成</span>
-                    </div>
-                    <div class="w-full h-4 bg-slate-700 rounded-full overflow-hidden flex">
-                        <div id="comp-nic" class="h-full bg-red-400" title="尼古丁基液"></div>
-                        <div id="comp-flav" class="h-full bg-purple-400" title="香精"></div>
-                        <div id="comp-vg" class="h-full bg-green-600" title="纯VG"></div>
-                        <div id="comp-pg" class="h-full bg-blue-600" title="纯PG"></div>
-                    </div>
-                    <div class="flex gap-4 mt-2 text-[10px] text-slate-400 justify-center">
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 bg-red-400 rounded-full"></div>基液</span>
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 bg-purple-400 rounded-full"></div>香精</span>
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 bg-green-600 rounded-full"></div>VG</span>
-                        <span class="flex items-center gap-1"><div class="w-2 h-2 bg-blue-600 rounded-full"></div>PG</span>
-                    </div>
-                </div>
-
             </div>
+        </div>
+
+        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg">
+            <h2 class="text-lg font-semibold text-yellow-500 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                我的配方书
+            </h2>
+            <div id="recipeLibrary" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                </div>
         </div>
     </div>
 
 <script>
-    // 初始化状态
-    let flavors = [
-        { id: 1, name: '香精 1', pct: 5 }
-    ];
+    let flavors = [{ name: '默认香精', pct: 5 }];
+    let recipeBook = JSON.parse(localStorage.getItem('myVapeRecipes') || '[]');
 
-    // DOM 元素引用
     const els = {
         targetVol: document.getElementById('targetVol'),
         targetStr: document.getElementById('targetStr'),
@@ -184,235 +114,142 @@
         targetRatioDisplay: document.getElementById('targetRatioDisplay'),
         baseStr: document.getElementById('baseStr'),
         baseType: document.getElementById('baseType'),
+        recipeName: document.getElementById('recipeName'),
         flavorsContainer: document.getElementById('flavorsContainer'),
-        totalFlavorPct: document.getElementById('totalFlavorPct'),
         resultBody: document.getElementById('resultBody'),
         totalMl: document.getElementById('totalMl'),
         warningBox: document.getElementById('warning-box'),
-        warningText: document.getElementById('warning-text'),
-        // Visualization
-        barPg: document.getElementById('bar-pg'),
-        barVg: document.getElementById('bar-vg'),
-        compNic: document.getElementById('comp-nic'),
-        compFlav: document.getElementById('comp-flav'),
-        compVg: document.getElementById('comp-vg'),
-        compPg: document.getElementById('comp-pg'),
+        recipeLibrary: document.getElementById('recipeLibrary')
     };
 
-    // 监听事件
     function bindEvents() {
-        document.querySelectorAll('input, select').forEach(el => {
-            el.addEventListener('input', calculate);
-        });
+        document.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calculate));
         els.targetVgSlider.addEventListener('input', (e) => {
-            els.targetRatioDisplay.innerText = `${100 - e.target.value} PG / ${e.target.value} VG`;
+            els.targetRatioDisplay.innerText = `${100 - e.target.value}/${e.target.value}`;
         });
     }
 
-    // 添加香精行
+    function calculate() {
+        const vol = parseFloat(els.targetVol.value) || 0;
+        const targetNic = parseFloat(els.targetStr.value) || 0;
+        const targetVgPct = parseInt(els.targetVgSlider.value);
+        const targetPgPct = 100 - targetVgPct;
+        const baseStr = parseFloat(els.baseStr.value) || 0;
+        const baseVgPct = parseInt(els.baseType.value);
+        
+        els.warningBox.classList.add('hidden');
+        if (vol <= 0) return;
+
+        let nicVol = baseStr > 0 ? (targetNic * vol) / baseStr : 0;
+        let flavVol = 0;
+        let flavHtml = '';
+        
+        flavors.forEach(f => {
+            let fv = vol * (f.pct / 100);
+            flavVol += fv;
+            if(fv > 0) flavHtml += renderRow(f.name || '未命名香精', fv, f.pct, 'text-purple-400');
+        });
+
+        let nicPg = nicVol * ((100 - baseVgPct)/100);
+        let nicVg = nicVol * (baseVgPct/100);
+        
+        let extraVg = (vol * targetVgPct/100) - nicVg;
+        let extraPg = (vol * targetPgPct/100) - nicPg - flavVol;
+
+        if (extraVg < 0 || extraPg < 0) {
+            els.warningBox.classList.remove('hidden');
+            els.warningBox.innerText = "错误：目标比例无法实现，香精或尼古丁过多。";
+        }
+
+        let html = '';
+        if(nicVol > 0) html += renderRow('尼古丁基液', nicVol, (nicVol/vol*100), 'text-red-400');
+        html += flavHtml;
+        html += renderRow('纯 VG', Math.max(0, extraVg), (Math.max(0, extraVg)/vol*100), 'text-green-400 font-bold');
+        html += renderRow('纯 PG', Math.max(0, extraPg), (Math.max(0, extraPg)/vol*100), 'text-blue-400 font-bold');
+        
+        els.resultBody.innerHTML = html;
+        els.totalMl.innerText = vol.toFixed(2) + ' ml';
+    }
+
+    function renderRow(name, ml, pct, cl) {
+        return `<tr class="hover:bg-slate-700/50"><td class="px-4 py-2 ${cl}">${name}</td><td class="px-4 py-2 text-right font-bold">${ml.toFixed(2)}</td><td class="px-4 py-2 text-right text-slate-500">${pct.toFixed(1)}%</td></tr>`;
+    }
+
+    function addFlavor() { flavors.push({ name: '', pct: 0 }); renderFlavors(); }
+    function removeFlavor(i) { flavors.splice(i, 1); renderFlavors(); }
     function renderFlavors() {
         els.flavorsContainer.innerHTML = '';
-        flavors.forEach((f, index) => {
-            const row = document.createElement('div');
-            row.className = 'flex gap-2 items-center';
-            row.innerHTML = `
-                <input type="text" value="${f.name}" placeholder="香精名称" 
-                    oninput="updateFlavor(${index}, 'name', this.value)"
-                    class="flex-1 bg-slate-900 border border-slate-600 rounded p-2 text-sm focus:border-purple-500 outline-none">
-                <div class="relative w-24">
-                    <input type="number" value="${f.pct}" 
-                        oninput="updateFlavor(${index}, 'pct', this.value)"
-                        class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-sm focus:border-purple-500 outline-none text-right pr-6">
-                    <span class="absolute right-2 top-2 text-slate-500 text-sm">%</span>
-                </div>
-                <button onclick="removeFlavor(${index})" class="text-slate-500 hover:text-red-400 p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                </button>
-            `;
-            els.flavorsContainer.appendChild(row);
+        flavors.forEach((f, i) => {
+            const div = document.createElement('div');
+            div.className = 'flex gap-2';
+            div.innerHTML = `<input type="text" value="${f.name}" oninput="flavors[${i}].name=this.value;calculate()" placeholder="名称" class="flex-1 bg-slate-900 border border-slate-600 rounded p-1 text-sm outline-none"><input type="number" value="${f.pct}" oninput="flavors[${i}].pct=parseFloat(this.value)||0;calculate()" class="w-16 bg-slate-900 border border-slate-600 rounded p-1 text-sm text-right outline-none"><button onclick="removeFlavor(${i})" class="text-slate-500 hover:text-red-400">×</button>`;
+            els.flavorsContainer.appendChild(div);
         });
         calculate();
     }
 
-    window.addFlavor = () => {
-        flavors.push({ id: Date.now(), name: '', pct: 0 });
-        renderFlavors();
-    };
-
-    window.removeFlavor = (index) => {
-        flavors.splice(index, 1);
-        renderFlavors();
-    };
-
-    window.updateFlavor = (index, key, value) => {
-        flavors[index][key] = key === 'pct' ? parseFloat(value) || 0 : value;
-        calculate();
-    };
-
-    window.resetCalculator = () => {
-        if(confirm('确定重置所有数据吗？')) {
-            localStorage.removeItem('vapeCalcData');
-            location.reload();
-        }
-    };
-
-    // 核心计算逻辑 (纯体积)
-    function calculate() {
-        // 1. 获取输入值
-        const targetVol = parseFloat(els.targetVol.value) || 0;
-        const targetNicStr = parseFloat(els.targetStr.value) || 0;
-        const targetVgPct = parseFloat(els.targetVgSlider.value);
-        const targetPgPct = 100 - targetVgPct;
-        
-        const baseNicStr = parseFloat(els.baseStr.value) || 0;
-        const baseVgPct = parseFloat(els.baseType.value); // 0(PG), 100(VG), or 50
-        const basePgPct = 100 - baseVgPct;
-
-        // 2. 基础校验
-        els.warningBox.classList.add('hidden');
-        if (targetVol <= 0) return;
-        
-        // 3. 计算尼古丁基液用量 (ml)
-        let nicBaseVol = 0;
-        if (targetNicStr > 0 && baseNicStr > 0) {
-            nicBaseVol = (targetNicStr * targetVol) / baseNicStr;
-        } else if (targetNicStr > 0 && baseNicStr === 0) {
-            showError("基液浓度不能为 0");
-            return;
-        }
-
-        // 基液中带入的 PG 和 VG 体积
-        const nicBaseVolPg = nicBaseVol * (basePgPct / 100);
-        const nicBaseVolVg = nicBaseVol * (baseVgPct / 100);
-
-        // 4. 计算香精用量 (ml) (假设全为 PG)
-        let totalFlavorPct = 0;
-        let flavorResults = [];
-        let totalFlavorVol = 0;
-
-        flavors.forEach(f => {
-            totalFlavorPct += f.pct;
-            const vol = targetVol * (f.pct / 100);
-            // 移除了重量计算
-            flavorResults.push({ ...f, vol });
-            totalFlavorVol += vol;
-        });
-
-        els.totalFlavorPct.innerText = totalFlavorPct.toFixed(1) + "%";
-
-        // 香精全部视为 PG
-        const flavorVolPg = totalFlavorVol; 
-
-        // 5. 计算所需添加的纯 VG 和 纯 PG
-        const targetTotalVg = targetVol * (targetVgPct / 100);
-        const targetTotalPg = targetVol * (targetPgPct / 100);
-
-        let reqVgVol = targetTotalVg - nicBaseVolVg;
-        let reqPgVol = targetTotalPg - nicBaseVolPg - flavorVolPg;
-
-        // 6. 错误检查：如果所需量为负数
-        if (reqVgVol < 0) {
-            showError(`目标 VG 比例过低！基液已包含 ${nicBaseVolVg.toFixed(1)}ml VG，但目标仅需 ${targetTotalVg.toFixed(1)}ml。`);
-            reqVgVol = 0; 
-        }
-        if (reqPgVol < 0) {
-            showError(`目标 PG 比例过低！香精+基液已包含 ${(nicBaseVolPg + flavorVolPg).toFixed(1)}ml PG，但目标仅需 ${targetTotalPg.toFixed(1)}ml。请提高目标 PG 比例或减少香精。`);
-            reqPgVol = 0;
-        }
-
-        // 7. 渲染结果表格 (仅 ml)
-        let html = '';
-        
-        // 尼古丁行
-        if (nicBaseVol > 0) {
-            html += renderRow(`尼古丁基液 (${baseNicStr}mg)`, nicBaseVol, (nicBaseVol/targetVol*100), 'text-red-400');
-        }
-
-        // 香精行
-        flavorResults.forEach(f => {
-            if (f.vol > 0) html += renderRow(f.name || '未命名香精', f.vol, f.pct, 'text-purple-400');
-        });
-
-        // VG 行
-        html += renderRow('纯 VG (蔬菜甘油)', reqVgVol, (reqVgVol/targetVol*100), 'text-green-400 font-bold');
-
-        // PG 行
-        html += renderRow('纯 PG (丙二醇)', reqPgVol, (reqPgVol/targetVol*100), 'text-blue-400 font-bold');
-
-        els.resultBody.innerHTML = html;
-
-        // 总计
-        const grandTotalVol = nicBaseVol + totalFlavorVol + reqVgVol + reqPgVol;
-        
-        els.totalMl.innerText = grandTotalVol.toFixed(2) + ' ml';
-
-        // 8. 更新可视化图表
-        // PG/VG Bar
-        els.barPg.style.width = `${targetPgPct}%`;
-        els.barVg.style.width = `${targetVgPct}%`;
-
-        // Components Bar
-        const pNic = (nicBaseVol / targetVol) * 100;
-        const pFlav = (totalFlavorVol / targetVol) * 100;
-        const pVg = (reqVgVol / targetVol) * 100;
-        const pPg = (reqPgVol / targetVol) * 100;
-
-        els.compNic.style.width = `${pNic}%`;
-        els.compFlav.style.width = `${pFlav}%`;
-        els.compVg.style.width = `${pVg}%`;
-        els.compPg.style.width = `${pPg}%`;
-
-        // 保存数据
-        saveData();
-    }
-
-    function renderRow(name, ml, pct, colorClass = 'text-slate-200') {
-        return `
-            <tr class="hover:bg-slate-700/50 transition">
-                <td class="px-6 py-3 font-medium ${colorClass}">${name}</td>
-                <td class="px-6 py-3 font-bold bg-slate-800/50">${ml.toFixed(2)}</td>
-                <td class="px-6 py-3 text-slate-400">${pct.toFixed(1)}%</td>
-            </tr>
-        `;
-    }
-
-    function showError(msg) {
-        els.warningBox.classList.remove('hidden');
-        els.warningText.innerText = msg;
-    }
-
-    // LocalStorage 功能
-    function saveData() {
-        const data = {
-            targetVol: els.targetVol.value,
-            targetStr: els.targetStr.value,
-            targetVg: els.targetVgSlider.value,
+    // --- 配方库功能 ---
+    function saveCurrentRecipe() {
+        const name = els.recipeName.value.trim() || "未命名配方 " + new Date().toLocaleDateString();
+        const recipe = {
+            id: Date.now(),
+            name: name,
+            vol: els.targetVol.value,
+            str: els.targetStr.value,
+            vg: els.targetVgSlider.value,
             baseStr: els.baseStr.value,
             baseType: els.baseType.value,
-            flavors: flavors
+            flavors: [...flavors]
         };
-        localStorage.setItem('vapeCalcData', JSON.stringify(data));
+        recipeBook.unshift(recipe);
+        localStorage.setItem('myVapeRecipes', JSON.stringify(recipeBook));
+        renderLibrary();
+        alert("配方已保存到本地！");
     }
 
-    function loadData() {
-        const saved = localStorage.getItem('vapeCalcData');
-        if (saved) {
-            const data = JSON.parse(saved);
-            els.targetVol.value = data.targetVol;
-            els.targetStr.value = data.targetStr;
-            els.targetVgSlider.value = data.targetVg;
-            els.targetRatioDisplay.innerText = `${100 - data.targetVg} PG / ${data.targetVg} VG`;
-            els.baseStr.value = data.baseStr;
-            els.baseType.value = data.baseType;
-            if (data.flavors) flavors = data.flavors;
-        }
+    function renderLibrary() {
+        els.recipeLibrary.innerHTML = recipeBook.length ? '' : '<p class="text-slate-500 text-sm italic col-span-full">暂无保存的配方</p>';
+        recipeBook.forEach(r => {
+            const card = document.createElement('div');
+            card.className = 'bg-slate-900 border border-slate-700 p-4 rounded-lg relative hover:border-yellow-500 transition group';
+            card.innerHTML = `
+                <div class="font-bold text-yellow-500 mb-1 truncate pr-6">${r.name}</div>
+                <div class="text-[10px] text-slate-400 mb-2">${100-r.vg}PG/${r.vg}VG · ${r.str}mg</div>
+                <div class="flex gap-2">
+                    <button onclick="loadRecipe(${r.id})" class="text-[10px] bg-slate-700 px-2 py-1 rounded hover:bg-slate-600">加载</button>
+                    <button onclick="deleteRecipe(${r.id})" class="text-[10px] text-red-500 opacity-0 group-hover:opacity-100 transition">删除</button>
+                </div>
+            `;
+            els.recipeLibrary.appendChild(card);
+        });
+    }
+
+    window.loadRecipe = (id) => {
+        const r = recipeBook.find(x => x.id === id);
+        if(!r) return;
+        els.recipeName.value = r.name;
+        els.targetVol.value = r.vol;
+        els.targetStr.value = r.str;
+        els.targetVgSlider.value = r.vg;
+        els.targetRatioDisplay.innerText = `${100-r.vg}/${r.vg}`;
+        els.baseStr.value = r.baseStr;
+        els.baseType.value = r.baseType;
+        flavors = [...r.flavors];
         renderFlavors();
-    }
+    };
 
-    // 初始化
+    window.deleteRecipe = (id) => {
+        if(!confirm("确定删除该配方吗？")) return;
+        recipeBook = recipeBook.filter(x => x.id !== id);
+        localStorage.setItem('myVapeRecipes', JSON.stringify(recipeBook));
+        renderLibrary();
+    };
+
+    window.resetCalculator = () => { if(confirm('重置当前输入吗？')) location.reload(); };
+
     bindEvents();
-    loadData();
-
+    renderFlavors();
+    renderLibrary();
 </script>
 </body>
 </html>
