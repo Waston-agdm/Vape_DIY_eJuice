@@ -1,8 +1,8 @@
 # ⚡ DIY 果汁计算器V2.0
-这是一个专为电子烟 DIY 玩家设计的网页版计算器。基于 HTML5 和 Tailwind CSS 构建，支持高精度配比计算、官方配方库检索以及个人配方本地存储功能。
+这是一个专为电子烟 DIY 玩家设计的网页版计算器。基于 HTML5 和 Tailwind CSS 构建，支持高精度配比计算、香精配方库检索以及个人配方本地存储功能。
 
 ## 🌐 在线访问
-**您的项目网址**：`https://你的用户名.github.io/你的仓库名/`
+**您的项目网址**：`https://waston-agdm.github.io/Vape_DIY_eJuice/`
 
 ---
 
