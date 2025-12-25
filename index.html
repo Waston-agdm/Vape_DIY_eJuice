@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DIY 果汁计算器 - Waston-Agdm</title>
+    
+    <link rel="icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAEAAQADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dnd4eXqGhcSGhygpRElYGVmIC4yOjm520dXZ3uHi27l5v7f/aAAwDAQACEQMRAD8A9fooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z" type="image/jpeg">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.2/busuanzi.pure.mini.js"></script>
+    <script async src="https://busuanzi.ibruce.info/busuanzi/2.2/busuanzi.pure.mini.js"></script>
+    
     <style>
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -25,7 +29,7 @@
         <div class="flex justify-between items-center mb-6 border-b border-slate-700 pb-4">
             <div>
                 <h1 class="text-2xl font-bold text-green-400">⚡ DIY 果汁计算器</h1>
-                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-mono">By Waston-Agdm | v2.3-Final</p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-mono">By Waston-Agdm | v2.4-Patch</p>
             </div>
             <div class="flex gap-2">
                 <button onclick="saveCurrentRecipe()" class="px-3 py-2 text-xs bg-green-600 hover:bg-green-500 rounded text-white font-bold transition shadow-lg">保存配方</button>
@@ -109,23 +113,21 @@
             </div>
         </div>
 
-        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl">
+        <div class="bg-slate-800/50 p-6 rounded-2xl border border-slate-700 shadow-xl mb-12">
             <h2 class="text-sm font-bold text-yellow-500 mb-5 flex items-center gap-2">📁 我的收藏配方</h2>
             <div id="recipeLibrary" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
     </div>
 
-    <footer class="mt-12 py-6 border-t border-slate-800 text-center space-y-2">
-        <p class="text-slate-500 text-[11px] tracking-widest font-mono">
-            © 2025 WASTON-AGDM. ALL RIGHTS RESERVED.
-        </p>
+    <footer class="py-6 border-t border-slate-800 text-center space-y-2 mt-auto">
+        <p class="text-slate-500 text-[11px] tracking-widest font-mono">© 2025 WASTON-AGDM. ALL RIGHTS RESERVED.</p>
         <div class="flex justify-center items-center gap-4 text-slate-600 text-[10px]">
-            <span id="busuanzi_container_site_pv" style="display:none">
-                👁️ 访问量 <span id="busuanzi_value_site_pv" class="text-slate-400 font-bold"></span>
+            <span id="busuanzi_container_site_pv">
+                👁️ 访问量 <span id="busuanzi_value_site_pv" class="text-slate-400 font-bold">...</span>
             </span>
             <span class="text-slate-700">|</span>
-            <span id="busuanzi_container_site_uv" style="display:none">
-                👤 访客数 <span id="busuanzi_value_site_uv" class="text-slate-400 font-bold"></span>
+            <span id="busuanzi_container_site_uv">
+                👤 访客数 <span id="busuanzi_value_site_uv" class="text-slate-400 font-bold">...</span>
             </span>
         </div>
         <p class="text-slate-700 text-[9px] italic">Waston-Agdm 个人私有辅助工具 | 数据仅供参考</p>
@@ -133,7 +135,7 @@
 
 <script>
     const PRESET_RECIPES = [
-        { name: "NM-草莓烟草", vg: 50, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 0}] },
+        { name: "NM-草莓烟草", vg: 50, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 1}] },
         { name: "NM-西瓜", vg: 50, str: 20, flavors: [{name: "西瓜", pct: 25}, {name: "草莓", pct: 5}, {name: "甜味", pct: 1}, {name: "凉味", pct: 5}] },
         { name: "NM-蓝莓", vg: 41, str: 20, flavors: [{name: "香精", pct: 20}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 4}] },
         { name: "NM-加浓草莓", vg: 41, str: 20, flavors: [{name: "香精", pct: 20}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 4}] },
@@ -142,7 +144,7 @@
         { name: "NM-西瓜汁", vg: 41, str: 20, flavors: [{name: "香精", pct: 20}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 4}] },
         { name: "NM-橙子芭乐", vg: 41, str: 20, flavors: [{name: "香精", pct: 20}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 4}] },
         { name: "NM-莫吉托", vg: 50, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 0.5}, {name: "凉味剂", pct: 4}] },
-        { name: "NM-茉莉芝士蛋糕", vg: 44.5, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 0.5}, {name: "凉味剂", pct: 0}] },
+        { name: "NM-茉莉芝士蛋糕", vg: 44.5, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 0.5}] },
         { name: "NM-草莓荔枝葡萄", vg: 43, str: 20, flavors: [{name: "香精", pct: 15}, {name: "甜味剂", pct: 0.5}, {name: "凉味剂", pct: 4}] },
         { name: "NM-菠萝", vg: 40, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 6}, {name: "酸味剂", pct: 1}] },
         { name: "NM-百香果", vg: 41, str: 20, flavors: [{name: "香精", pct: 20}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 6}] },
@@ -155,7 +157,7 @@
         { name: "NM-蜂蜜柚子茶", vg: 50, str: 20, flavors: [{name: "香精", pct: 30}, {name: "甜味剂", pct: 1}, {name: "凉味剂", pct: 4.5}] }
     ];
 
-    let flavors = PRESET_RECIPES[0].flavors; 
+    let flavors = JSON.parse(JSON.stringify(PRESET_RECIPES[0].flavors));
     let recipeBook = JSON.parse(localStorage.getItem('myVapeRecipes') || '[]');
     const els = {
         targetVol: document.getElementById('targetVol'),
