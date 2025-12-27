@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DIY 果汁计算器 - Waston-Agdm</title>
     
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%20%2290%22>🧪</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%231e293b%22/><text x=%2250%%22 y=%2265%%22 font-size=%2260%22 text-anchor=%22middle%22>🧪</text></svg>">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" type="image/png" href="https://api.iconify.design/fluent-emoji:test-tube.svg">
+    <link rel="apple-touch-icon" href="https://api.iconify.design/fluent-emoji:test-tube.svg">
+    <meta name="apple-mobile-web-app-title" content="果汁计算器">
+    <meta name="theme-color" content="#0f172a">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -387,6 +386,41 @@
     renderFlavors();
     renderLibrary();
     renderPresets();
+</script>
+<div id="guide-box" class="fixed bottom-6 left-4 right-4 z-[100] hidden animate-bounce">
+    <div class="bg-green-600 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-green-400">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">🧪</span>
+            <div>
+                <p class="text-sm font-bold">添加到主屏幕</p>
+                <p class="text-[10px] opacity-90">点击下方“分享”按钮，选择“添加到主屏幕”，即可像 App 一样使用</p>
+            </div>
+        </div>
+        <button onclick="document.getElementById('guide-box').remove()" class="bg-white/20 hover:bg-white/30 p-2 rounded-lg ml-2">
+            <span class="text-xs font-bold">知道了</span>
+        </button>
+    </div>
+    <div class="w-4 h-4 bg-green-600 rotate-45 mx-auto -mt-2 border-r border-b border-green-400"></div>
+</div>
+
+<script>
+    // 智能引导收藏逻辑
+    function showGuide() {
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        // 如果是手机访问，且不是在 App 模式下打开（即普通浏览器访问）
+        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+        if (isMobile && !isStandalone) {
+            // 延迟 2 秒显示，给用户一点缓冲时间
+            setTimeout(() => {
+                document.getElementById('guide-box').classList.remove('hidden');
+                document.getElementById('guide-box').classList.add('flex', 'flex-col');
+            }, 2000);
+        }
+    }
+
+    // 执行检测
+    showGuide();
 </script>
 </body>
 </html>
