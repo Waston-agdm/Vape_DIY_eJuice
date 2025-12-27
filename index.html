@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DIY 烟油计算器 - Waston-Agdm</title>
     
-    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/test-tube.png">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/180/test-tube.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://img.icons8.com/fluency/192/test-tube.png">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f172a%22/><path d=%22M35 25h30v5L55 45v25c0 5-5 10-10 10s-10-5-10-10V45L25 30v-5h10z%22 fill=%22none%22 stroke=%22%234ade80%22 stroke-width=%225%22 stroke-linejoin=%22round%22/><circle cx=%2245%22 cy=%2265%22 r=%223%22 fill=%22%234ade80%22 opacity=%220.6%22/></svg>">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/nolan/180/test-tube.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://img.icons8.com/nolan/192/test-tube.png">
     <meta name="apple-mobile-web-app-title" content="DIY烟油计算器">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -404,30 +404,33 @@
 </div>
 
 <script>
-<script>
     function showGuide() {
         const ua = navigator.userAgent;
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
+        // 增加了一个对移动端特征的通用检测
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(ua) || (window.innerWidth < 768);
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
+        // 如果是移动端设备 且 还没被添加到主屏幕
         if (isMobile && !isStandalone) {
             const isiOS = /iPhone|iPad|iPod/.test(ua);
-            const msgP = document.querySelector('#guide-box p.text-[10px]');
+            const msgP = document.getElementById('guide-text');
+            const finger = document.getElementById('guide-finger');
             
-            // 根据系统自动修改提示文字
-            if (msgP) {
-                if (isiOS) {
-                    msgP.innerText = '点击底部的“分享”按钮，向上滑动选择“添加到主屏幕”';
-                } else {
-                    msgP.innerText = '点击右上角“︙”菜单，选择“安装应用”或“添加到主屏幕”';
-                }
+            if (isiOS) {
+                msgP.innerHTML = '点击底部的<strong>“分享”</strong>按钮<br>选择<strong>“添加到主屏幕”</strong>';
+                finger.innerText = '👇'; 
+            } else {
+                msgP.innerHTML = '点击右上角<strong>“︙”</strong>或分享<br>选择<strong>“添加到主屏幕”</strong>';
+                finger.innerText = '↗️'; 
             }
 
             setTimeout(() => {
                 const box = document.getElementById('guide-box');
                 if(box) {
                     box.classList.remove('hidden');
-                    box.classList.add('flex', 'flex-col');
+                    box.classList.add('flex');
+                    // 确保它在最前面
+                    box.style.zIndex = "9999";
                 }
             }, 2000);
         }
@@ -436,5 +439,6 @@
 </script>
 </body>
 </html>
+
 
 
