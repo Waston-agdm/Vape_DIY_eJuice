@@ -404,6 +404,7 @@
 </div>
 
 <script>
+<script>
     function showGuide() {
         const ua = navigator.userAgent;
         const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
@@ -411,29 +412,29 @@
 
         if (isMobile && !isStandalone) {
             const isiOS = /iPhone|iPad|iPod/.test(ua);
-            const msgP = document.getElementById('guide-text');
-            const iconS = document.querySelector('#guide-box span.text-3xl');
+            const msgP = document.querySelector('#guide-box p.text-[10px]');
             
-            if (isiOS) {
-                // iOS Safari 分享通常在底部，手指向上指
-                msgP.innerHTML = '点击浏览器底部的<strong>“分享”</strong>按钮，<br>选择<strong>“添加到主屏幕”</strong>';
-                iconS.innerText = '👆';
-            } else {
-                // 安卓 Chrome/微信 菜单通常在顶部，手指向右指（或根据实际情况调整）
-                msgP.innerHTML = '点击菜单中的<strong>“分享”</strong>或<strong>“︙”</strong>，<br>选择<strong>“添加到主屏幕”</strong>或安装';
-                iconS.innerText = '👉';
+            // 根据系统自动修改提示文字
+            if (msgP) {
+                if (isiOS) {
+                    msgP.innerText = '点击底部的“分享”按钮，向上滑动选择“添加到主屏幕”';
+                } else {
+                    msgP.innerText = '点击右上角“︙”菜单，选择“安装应用”或“添加到主屏幕”';
+                }
             }
 
             setTimeout(() => {
                 const box = document.getElementById('guide-box');
                 if(box) {
                     box.classList.remove('hidden');
-                    box.classList.add('flex');
+                    box.classList.add('flex', 'flex-col');
                 }
             }, 2000);
         }
     }
     showGuide();
+</script>
 </body>
 </html>
+
 
