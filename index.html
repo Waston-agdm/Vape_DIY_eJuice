@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DIY 烟油计算器 - Waston-Agdm</title>
     
-    <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAMAAAAfD9L7AAAA81BMVEUAAAAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyAfFyD///8m0X9fAAAAX3RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gsYbeAAACx0lEQVR4nO3b6XKiMBQAYM6ELAn7vhM22XfS93+mS0vLVEVpZ7pM5vunH0pS96S5SQuBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMC/XNf97X0Mv6u67qYfH6L9f5p9fGv91zT8uG2mH6f9f0zDj+tm+nGmH2f6cab/vR/vOobf7039OOf6Xofpp5l+nOnH2f689f/d/7zM4cc51/9YmH6e6eeZfpy76cfZ/vz689D/N807SscL08807ygfD0w/07yjfDz8fL9p3vE6Xpp+pnlH+Xjg903zjg+6f6p6R+l4SfqZ5h2l4yXpZ5p3lI6XpZ9p3lE6XpZ+pnlH6XhZ+pnmHaXjZelnmnfY+n9X77D1H829/4P8P869/wP8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P869/4P8P+K57qrvH8L9/6f+PwUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD4p09U1hR1nC7U9gAAAABJRU5ErkJggg==">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%230f172a%22/><path d=%22M35 25h30v5L55 45v25c0 5-5 10-10 10s-10-5-10-10V45L25 30v-5h10z%22 fill=%22none%22 stroke=%22%234ade80%22 stroke-width=%225%22 stroke-linejoin=%22round%22/></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f172a'/><path d='M35 25h30v5L55 45v25c0 5-5 10-10 10s-10-5-10-10V45L25 30v-5z' fill='%234ade80'/></svg>">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M35 25h30v5L55 45v25c0 5-5 10-10 10s-10-5-10-10V45L25 30v-5z' fill='%234ade80'/></svg>">
+
     <meta name="apple-mobile-web-app-title" content="DIY烟油计算器">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -402,42 +406,10 @@
     <div class="w-4 h-4 bg-green-600 rotate-45 mx-auto -mt-2 border-r border-b border-green-400"></div>
 </div>
 
-<script>
-    function showGuide() {
-        const ua = navigator.userAgent;
-        // 增加了一个对移动端特征的通用检测
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(ua) || (window.innerWidth < 768);
-        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-
-        // 如果是移动端设备 且 还没被添加到主屏幕
-        if (isMobile && !isStandalone) {
-            const isiOS = /iPhone|iPad|iPod/.test(ua);
-            const msgP = document.getElementById('guide-text');
-            const finger = document.getElementById('guide-finger');
-            
-            if (isiOS) {
-                msgP.innerHTML = '点击底部的<strong>“分享”</strong>按钮<br>选择<strong>“添加到主屏幕”</strong>';
-                finger.innerText = '👇'; 
-            } else {
-                msgP.innerHTML = '点击右上角<strong>“︙”</strong>或分享<br>选择<strong>“添加到主屏幕”</strong>';
-                finger.innerText = '↗️'; 
-            }
-
-            setTimeout(() => {
-                const box = document.getElementById('guide-box');
-                if(box) {
-                    box.classList.remove('hidden');
-                    box.classList.add('flex');
-                    // 确保它在最前面
-                    box.style.zIndex = "9999";
-                }
-            }, 2000);
-        }
-    }
-    showGuide();
 </script>
 </body>
 </html>
+
 
 
 
