@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DIY 果汁计算器 - Waston-Agdm</title>
+    <title>DIY 烟油计算器 - Waston-Agdm</title>
     
-    <link rel="icon" type="image/png" href="https://api.iconify.design/fluent-emoji:test-tube.svg">
-    <link rel="apple-touch-icon" href="https://api.iconify.design/fluent-emoji:test-tube.svg">
-    <meta name="apple-mobile-web-app-title" content="果汁计算器">
-    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/test-tube.png">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/180/test-tube.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://img.icons8.com/fluency/192/test-tube.png">
+    <meta name="apple-mobile-web-app-title" content="DIY烟油计算器">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -48,7 +48,7 @@
     <div class="max-w-4xl mx-auto flex-grow w-full">
         <div class="flex flex-col md:flex-row md:justify-between items-start md:items-end mb-8 border-b border-slate-700/50 pb-6 gap-6 md:gap-0">
             <div>
-                <h1 class="text-3xl md:text-2xl font-black text-green-400 tracking-tight">⚡ DIY果汁计算器 V3.1</h1>
+                <h1 class="text-3xl md:text-2xl font-black text-green-400 tracking-tight">⚡ DIY烟油计算器 V3.1</h1>
                 <p class="text-xs text-slate-500 uppercase tracking-[0.2em] font-mono mt-1"> by-Waston</p>
             </div>
             <div class="flex w-full md:w-auto gap-3">
@@ -404,22 +404,35 @@
 </div>
 
 <script>
-    // 智能引导收藏逻辑
     function showGuide() {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        // 如果是手机访问，且不是在 App 模式下打开（即普通浏览器访问）
+        const ua = navigator.userAgent;
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
         if (isMobile && !isStandalone) {
-            // 延迟 2 秒显示，给用户一点缓冲时间
+            const isiOS = /iPhone|iPad|iPod/.test(ua);
+            const msgP = document.getElementById('guide-text');
+            const iconS = document.querySelector('#guide-box span.text-3xl');
+            
+            if (isiOS) {
+                // iOS Safari 分享通常在底部，手指向上指
+                msgP.innerHTML = '点击浏览器底部的<strong>“分享”</strong>按钮，<br>选择<strong>“添加到主屏幕”</strong>';
+                iconS.innerText = '👆';
+            } else {
+                // 安卓 Chrome/微信 菜单通常在顶部，手指向右指（或根据实际情况调整）
+                msgP.innerHTML = '点击菜单中的<strong>“分享”</strong>或<strong>“︙”</strong>，<br>选择<strong>“添加到主屏幕”</strong>或安装';
+                iconS.innerText = '👉';
+            }
+
             setTimeout(() => {
-                document.getElementById('guide-box').classList.remove('hidden');
-                document.getElementById('guide-box').classList.add('flex', 'flex-col');
+                const box = document.getElementById('guide-box');
+                if(box) {
+                    box.classList.remove('hidden');
+                    box.classList.add('flex');
+                }
             }, 2000);
         }
     }
-
-    // 执行检测
     showGuide();
 </script>
 </body>
